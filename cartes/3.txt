@@ -1,0 +1,11 @@
+OOOOOOOOOO
+O        O
+O        O
+O        O
+O        O
+O        G
+O        O
+O        O
+O   X    O
+O        O
+OOOOOOOOOO 
