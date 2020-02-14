@@ -6,6 +6,7 @@ from getkey import getkey, keys
 from clevel import Level
 from ccaracter import Caracter
 
+
 game_on = True
 menu_choice = ""
 
