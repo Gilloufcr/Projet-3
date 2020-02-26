@@ -1,40 +1,49 @@
 # -*-coding:Utf-8 -*
 
-from getkey import getkey, keys
+#from getkey import getkey, keys
+import pygame
+from pygame.locals import *
+from constancy import *
 
 class Caracter():
 
-    def __init__(self, level_game):
+    def __init__(self, image, level_game):
 
         self.position_0 = level_game.positionmc
         self.position_wall = level_game.wall
         self.position_guardian = level_game.guardian
         self.position_spaces = level_game.spaces
+        self.image = pygame.image.load(image).convert_alpha()
         self.level_game = level_game
         self.new_positionmc = (0, 0)
         self.objects = []
         self.end = False
-        print("Position of Mac when Level Is Created", self.position_0)
+        #print("Position of Mac when Level Is Created", self.position_0)
         
 
 
     def move(self, key):
         
         x,y = self.position_0
-        objects = ""        
-        if key == keys.UP:
+        objects = ""
+           
+        #if key == keys.UP:
+        if key == K_UP:
             print("Position in UP time", self.position_0)
             self.new_positionmc = (x,y-1)
-                       
-        elif key == keys.DOWN:
+                    
+        #elif key == keys.DOWN:
+        elif key == K_DOWN:
             print("Position in DOWN time", self.position_0)
             self.new_positionmc = (x,y+1)
         
-        elif key == keys.RIGHT:
+        #elif key == keys.RIGHT:
+        elif key == K_RIGHT:
             print("Position in RIGHT time", self.position_0)
             self.new_positionmc = (x+1,y)
             
-        elif key == keys.LEFT:
+        #elif key == keys.LEFT:
+        elif key == K_LEFT:
             print("Position in LEFT time", self.position_0)
             self.new_positionmc = (x-1,y)
         else:

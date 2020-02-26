@@ -4,6 +4,9 @@ from pathlib import Path
 from ccaracter import Caracter
 import random
 import os
+import pygame
+from pygame.locals import *
+from constancy import *
 
 mon_rep_cartes = Path(__file__).parent / "cartes"
 cartes_temp = Path(__file__).parent / "temp"
@@ -56,16 +59,42 @@ class Level():
 
         return self.list_level        
     
-    def display_level(self, positionmac=()):
-        clear = lambda: os.system('clear')
-        clear()
+    def display_level(self, fenetre, positionmac=()):
+       # clear = lambda: os.system('clear')
+       # clear()
+
+        mur = pygame.image.load(image_mur).convert()
+        gardien = pygame.image.load(image_arrivee).convert_alpha()
+        mac = pygame.image.load(MacGyver).convert_alpha()
+        needle = pygame.image.load(picture_needle).convert_alpha()
+        ether = pygame.image.load(picture_ether).convert_alpha()
+        pipe = pygame.image.load(picture_pipe).convert_alpha()
+
+
         if positionmac != ():
             self.list_level[self.positionmc[1]][self.positionmc[0]] = " "
             self.list_level[positionmac[1]][positionmac[0]] = "X"
             self.positionmc = positionmac
 
+        num_ligne = 0
         for line in self.list_level:
-            line_to_display = ""
+            num_case = 0
             for elements in line:
-                line_to_display += elements
-            print(line_to_display)
+                x = num_case * taille_sprite
+                y = num_ligne * taille_sprite
+                if elements == 'O':		   
+                    fenetre.blit(mur, (x,y))
+                elif elements == 'G':		   
+                    fenetre.blit(gardien, (x,y))
+                elif elements == 'X':
+                    fenetre.blit(mac, (x,y))
+                elif elements == 'P':
+                    fenetre.blit(pipe, (x,y))
+                elif elements == 'E':
+                    fenetre.blit(ether, (x,y))
+                elif elements == 'N':
+                    fenetre.blit(needle, (x,y))
+                
+                num_case += 1
+            num_ligne += 1
+            

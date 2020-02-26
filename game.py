@@ -2,38 +2,81 @@
 """Fichier Principal du jeux de labyrinthe a terminer..."""
 
 import os
-from getkey import getkey, keys
+import pygame
+from pygame.locals import *
+from constancy import *
 from clevel import Level
 from ccaracter import Caracter
 
-
+pygame.init()
 game_on = True
 menu_choice = ""
 
+#Open Pygame Windows 
+fenetre = pygame.display.set_mode((cote_fenetre, cote_fenetre))
+
+#Icone
+icone = pygame.image.load(image_icone)
+pygame.display.set_icon(icone)
+
+#Title of Windows
+pygame.display.set_caption(titre_fenetre)
 
 while game_on == True:
     """Tant que la partie n'est pas fini, on a atteint la sortie G"""
     
     """Menu"""
-    menu_choice = input("Merci de faire un choix : \n 1-)Selection du niveau, 1, 2, 3 \n 2-)Quitter \n\nVotre choix : ")
-        
-    if menu_choice == '1':
-    
-        level_choice = input("Merci de Choisir une cartes parmis la liste suivante 1,2,3 : ")
-            
-        play_level = Level(level_choice)
-        play_level.display_level()
-        macgiver = Caracter(play_level)
 
-        list_of_objects = []
-        while macgiver.end is not True:
-            macgiver.move(getkey())
-            play_level.display_level(macgiver.position_0)
+    #Chargement et affichage de l'écran d'accueil
+    accueil = pygame.image.load(image_accueil).convert()
+    fenetre.blit(accueil, (0,0))
+
+	#Rafraichissement
+    pygame.display.flip()
             
-            print(macgiver.objects)
-            
+    #Limitation de vitesse de la boucle
+    pygame.time.Clock().tick(30)
+
+    wait_choice = True
+
+    while wait_choice:
+        for event in pygame.event.get():
+            if event.type == KEYDOWN: 
+                if event.key == K_F1:
+                    wait_choice = False
+                    level_choice = '1'
+
+                elif event.key == K_F2:
+                    wait_choice = False
+                    level_choice = '2'
+    
+    list_of_objects = []
+
+    #Chargement du fond
+    fond = pygame.image.load(image_fond).convert()
+
+    play_level = Level(level_choice)
+    play_level.display_level(fenetre)
+    macgiver = Caracter("images/dk_droite.png", play_level)
+
+    while macgiver.end is not True:
+
         
-        game_on = False
+        #Limitation de vitesse de la boucle
+        pygame.time.Clock().tick(30)
+        wait_move = True
+        while wait_move:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    macgiver.move(event.key)
+                    fenetre.blit(fond, (0,0))
+                    #fenetre.blit(dk.direction, (dk.x, dk.y))
+                    play_level.display_level(fenetre, macgiver.position_0)
+                
+                    pygame.display.flip()
+                
+    
+    game_on = False
         
-    if menu_choice == '2':
-        game_on = False
+    
+       
