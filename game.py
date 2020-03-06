@@ -1,5 +1,5 @@
 # -*-coding:Utf-8 -*
-"""Fichier Principal du jeux de labyrinthe a terminer..."""
+"""Main File of Game"""
 
 import os
 import pygame
@@ -23,25 +23,27 @@ pygame.display.set_icon(icone)
 pygame.display.set_caption(titre_fenetre)
 
 while game_on == True:
-    """Tant que la partie n'est pas fini, on a atteint la sortie G"""
+    """Until the end game we do a while"""
     
     """Menu"""
 
-    #Chargement et affichage de l'écran d'accueil
+    #Display game screen
     accueil = pygame.image.load(image_accueil).convert()
     fenetre.blit(accueil, (0,0))
-
-	#Rafraichissement
     pygame.display.flip()
-            
-    #Limitation de vitesse de la boucle
     pygame.time.Clock().tick(30)
 
+    #Wait level choice of player 
     wait_choice = True
 
     while wait_choice:
         for event in pygame.event.get():
-            if event.type == KEYDOWN: 
+
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                wait_choice = False
+                game_on = False
+
+            elif event.type == KEYDOWN: 
                 if event.key == K_F1:
                     wait_choice = False
                     level_choice = '1'
@@ -52,29 +54,38 @@ while game_on == True:
     
     list_of_objects = []
 
-    #Chargement du fond
-    fond = pygame.image.load(image_fond).convert()
+    #Background load
+    background = pygame.image.load(image_fond).convert()
 
     play_level = Level(level_choice)
     play_level.display_level(fenetre)
-    macgiver = Caracter("images/dk_droite.png", play_level)
+    macgiver = Caracter("images/MacGyver.png", play_level)
 
-    while macgiver.end is not True:
+    while macgiver.end == "":
 
         
-        #Limitation de vitesse de la boucle
         pygame.time.Clock().tick(30)
-        wait_move = True
-        while wait_move:
+        
+        while macgiver.wait_move:
             for event in pygame.event.get():
-                if event.type == KEYDOWN:
+                
+                if event.type == QUIT:
+                    game_on = False
+				
+                elif event.type == KEYDOWN:
                     macgiver.move(event.key)
-                    fenetre.blit(fond, (0,0))
-                    #fenetre.blit(dk.direction, (dk.x, dk.y))
+                    fenetre.blit(background, (0,0))
                     play_level.display_level(fenetre, macgiver.position_0)
                 
                     pygame.display.flip()
                 
+
+    if macgiver.end == "win":
+        print("je suis la ")
+        end = pygame.image.load(image_win).convert()
+        fenetre.blit(end, (0,0))
+        pygame.display.flip()
+        pygame.time.Clock().tick(30)
     
     game_on = False
         

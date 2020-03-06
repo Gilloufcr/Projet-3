@@ -17,7 +17,8 @@ class Caracter():
         self.level_game = level_game
         self.new_positionmc = (0, 0)
         self.objects = []
-        self.end = False
+        self.end = ""
+        self.wait_move = True
         #print("Position of Mac when Level Is Created", self.position_0)
         
 
@@ -26,7 +27,7 @@ class Caracter():
         
         x,y = self.position_0
         objects = ""
-           
+        
         #if key == keys.UP:
         if key == K_UP:
             print("Position in UP time", self.position_0)
@@ -46,6 +47,7 @@ class Caracter():
         elif key == K_LEFT:
             print("Position in LEFT time", self.position_0)
             self.new_positionmc = (x-1,y)
+            
         else:
             self.new_positionmc = x, y    
             
@@ -61,11 +63,11 @@ class Caracter():
         
         if self.new_positionmc in self.position_guardian:
             if len(self.objects) == 3:
-                self.end = True
-                print("Vous avez Gagné!")
+                self.wait_move = False
+                self.end = "win"                                
             else:
-                self.end = True
-                print("Vous avez perdu!!")
+                self.end = "loose"
+                
 
 
-        return self.end
+        return self.end, self.wait_move
